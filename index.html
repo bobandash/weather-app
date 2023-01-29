@@ -6,11 +6,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script defer src="main.js"></script>
     <link rel = "stylesheet" href = "index.css">
+    <link rel = "stylesheet" href = "../node_modules/@fortawesome/fontawesome-free/css/all.css"
   </head>
   <body>
-    <form id = "location-form">
-      <input type="text" id = "location">
-      <button type = "submit">Submit</button>
-    </form>
+    <div id = "container">
+      <form id = "location-form">
+        <input type="text" id = "location" placeholder = "Your Location...">
+        <button type = "submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+      <div id = "sub-container">
+        <div id = "about-location">
+          <h2 class = "normal-header" data-weather>Clear Skies</h2>
+          <h1 class = "focused-text" data-location>San Francisco</h1>
+          <p class = "small-text pull-up" data-time>4:13PM, January 28, 2023</p>
+        </div>
+        <div id = "weather-container">
+          <div id = "current-temperature-container">
+            <h1 class = "focused-text big" data-current-temperature>100°F</h1>
+            <button id = "change-units-btn">Change to °C</button>
+          </div>
+          <div id = "current-temperature-values-container">
+            <p class="small-text" data-current-high>High: 60°F</p>
+            <p class="small-text" data-current-low>Low: 60°F</p>
+            <p class="small-text" data-current-wind>Wind: 10mph</p>
+            <p class="small-text" data-current-humidity>Humidity: 50</p>
+            <p class="small-text" data-current-rain>Rain: 20%</p>
+          </div>
+        </div>
+        <div id = "next-week-weather-container">
+          <h2 class = "normal-header">Next Week's Weather:</h2>
+          <div class = "weather-card">
+            <h2 class = "normal-header">Saturday</h2>
+            <i class="fa-solid fa-cloud-rain big"></i>
+            <div class = "high-low-temperatures">
+              <h2 class = "normal-header">62°</h2>
+              <h2 class = "normal-header low-temperature">58°</h2>
+            </div>
+          </div>
+          <div class = "weather-card">
+            <h2 class = "normal-header">Friday</h2>
+            <i class="fa-solid fa-cloud-rain big"></i>
+            <div class = "high-low-temperatures">
+              <h2 class = "normal-header">62°</h2>
+              <h2 class = "normal-header low-temperature">58°</h2>
+            </div>
+          </div>
+          <div class = "weather-card">
+            <h2 class = "normal-header">Friday</h2>
+            <i class="fa-solid fa-cloud-rain big"></i>
+            <div class = "high-low-temperatures">
+              <h2 class = "normal-header">62°</h2>
+              <h2 class = "normal-header low-temperature">58°</h2>
+            </div>
+          </div>
+          <div class = "weather-card">
+            <h2 class = "normal-header">Friday</h2>
+            <i class="fa-solid fa-cloud-rain big"></i>
+            <div class = "high-low-temperatures">
+              <h2 class = "normal-header">62°</h2>
+              <h2 class = "normal-header low-temperature">58°</h2>
+            </div>
+          </div>
+          <div class = "weather-card">
+            <h2 class = "normal-header">Friday</h2>
+            <i class="fa-solid fa-cloud-rain big"></i>
+            <div class = "high-low-temperatures">
+              <h2 class = "normal-header">62°</h2>
+              <h2 class = "normal-header low-temperature">58°</h2>
+            </div>
+          </div>
+          <div class = "weather-card">
+            <h2 class = "normal-header">Friday</h2>
+            <i class="fa-solid fa-cloud-rain big"></i>
+            <div class = "high-low-temperatures">
+              <h2 class = "normal-header">62°</h2>
+              <h2 class = "normal-header low-temperature">58°</h2>
+            </div>
+          </div>
+          <div class = "weather-card">
+            <h2 class = "normal-header">Friday</h2>
+            <i class="fa-solid fa-cloud-rain big"></i>
+            <div class = "high-low-temperatures">
+              <h2 class = "normal-header">62°</h2>
+              <h2 class = "normal-header low-temperature">58°</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

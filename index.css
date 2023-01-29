@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --night-background: white;
+}
+
+* {
+  font-family: 'Outfit', 'Times New Roman';
+}
+
+html {
+  font-size: 12px;
+}
+
+body {
+  background-color: black;
+}
+
+body * {
+  color: var(--night-background);
+}
+
+#container {
+  margin-left: 3rem;
+  margin-right: 3rem;
+}
+
+/* with the location form */
+
+#location-form {
+  margin: 3rem auto 0 auto;
+  border: 2px solid white;
+  border-radius: 20px;
+  display: flex;
+}
+
+#location-form * {
+  font-size: 1.5rem;
+  padding: 0.4rem;
+  background: none;
+  border: none;
+}
+
+#location-form input {
+  padding-left: 1.5rem;
+  padding-right: 2rem;
+  width: 100%;
+}
+
+#location-form input::placeholder {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+#location-form button {
+  padding-right: 1rem;
+  cursor: pointer;
+}
+
+#location-form input:focus {
+  outline: none;
+}
+
+/* everything to do with about information */
+#sub-container {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+#about-location {
+  margin-top: 2.5rem;
+}
+
+.normal-header {
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.focused-text {
+  text-transform: uppercase;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.small-text {
+  font-size: 1.25rem;
+  font-weight: 100;
+}
+
+.pull-up {
+  margin-top: -.5rem;
+}
+
+/* everything to do with the current weather */
+#weather-container {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: row;
+}
+
+#current-temperature-container {
+  border-right: 1px solid white;
+  padding-right: 1rem;
+}
+
+.focused-text.big {
+  font-size: 4.8rem;
+}
+
+#change-units-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+}
+
+#current-temperature-values-container {
+  padding-left: 1rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+#current-temperature-container, #current-temperature-values-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#current-temperature-values-container *:nth-child(n + 2) {
+  margin-top: 0.3em;
+}
+
+/* everything to do with the weather for next 7 days */
+#next-week-weather-container {
+  margin-top: 1.5rem;
+}
+
+.weather-card {
+  background-color: white;
+  display: grid;
+  grid-template-columns: 42.5% 20% 37.5%;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0;
+  justify-items: center;
+  align-items: center;
+}
+
+.weather-card * {
+  color: black;
+}
+
+.high-low-temperatures {
+  display: flex;
+}
+
+i.big {
+  font-size: 2.25rem;
+}
+
+.normal-header.low-temperature {
+  margin-left: 0.5rem;
+  color: darkgray;
+}
+
+.weather-card:last-child {
+  margin-bottom: 1rem;
+}
