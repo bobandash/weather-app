@@ -50,7 +50,7 @@ async function main (locationObj){
   const weather = await getWeather(await getCoords(locationObj));
   console.log(weather);
 }
-
+ 
 const locationForm = document.getElementById('location-form');
 locationForm.addEventListener('submit', (event) => {
   const locationInput = document.getElementById('location');
