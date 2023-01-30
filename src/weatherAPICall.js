@@ -46,18 +46,19 @@ async function getWeather ({latitude, longitude} = {}){
   return relevantWeatherData;
 }
 
-async function get7DayWeather{latitude, longitude} = {}){
+async function get7DayWeather({latitude, longitude} = {}){
   const response = await fetch(`api.openweathermap.org/data/2.5/forecast/daily?lat=${latitude}&lon=${longitude}&cnt=7&appid=${APIKey}`);
   const weatherData = await response.json();
   const weatherDataList = weatherData.list;
-  let relevantWeatherData = [];
-  for(let i = 0; i < 7; i++){
-    let relevantValuesInDataList = {
-      time: weatherDataList.dt,
-      max_temperature: weatherDataList.temp.max,
-      min_temperature: weatherDataList.temp.min,
-      weather: weatherDataList.weather.main
+  const relevantWeatherData = [];
+  for(let i = 0; i < 7; i += 1){
+    const relevantValuesInDataList = {
+      time: weatherDataList[i].dt,
+      max_temperature: weatherDataList[i].temp.max,
+      min_temperature: weatherDataList[i].temp.min,
+      weather: weatherDataList[i].weather.main
     }
+    relevantWeatherData.push(relevantValuesInDataList);
   }
   return relevantWeatherData;
 }
@@ -67,13 +68,9 @@ async function getWeatherData (locationObj){
   return weather;
 }
  
-
-
-async function get7DayWeather (locationObj){
-  const coords = await getCoords(locationObj);
-  const response = await fetch(`api.openweathermap.org/data/2.5/forecast/daily?lat=${latitude}&lon=${longitude}&cnt=7&appid=${APIKey}`);
-  const weatherData = await response.json();
-  console.log(weatherData);
+async function get7DayWeatherData (locationObj){
+  const weather = await get7DayWeather(await getCoords(locationObj));
+  return weather;
 }
 
-export {getWeatherData, get7DayWeather};
+export {getWeatherData, get7DayWeatherData};
