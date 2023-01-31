@@ -46,21 +46,83 @@ async function getWeather ({latitude, longitude} = {}){
   return relevantWeatherData;
 }
 
-async function get7DayWeather({latitude, longitude} = {}){
-  const response = await fetch(`api.openweathermap.org/data/2.5/forecast/daily?lat=${latitude}&lon=${longitude}&cnt=7&appid=${APIKey}`);
-  const weatherData = await response.json();
-  const weatherDataList = weatherData.list;
-  const relevantWeatherData = [];
-  for(let i = 0; i < 7; i += 1){
-    const relevantValuesInDataList = {
-      time: weatherDataList[i].dt,
-      max_temperature: weatherDataList[i].temp.max,
-      min_temperature: weatherDataList[i].temp.min,
-      weather: weatherDataList[i].weather.main
-    }
-    relevantWeatherData.push(relevantValuesInDataList);
+function getDayName(dateStr, locale)
+{
+    const date = new Date(dateStr);
+    return date.toLocaleDateString(locale, { weekday: 'long' });        
+}
+
+function getWeatherIconDOM(weather){
+  const icon = document.createElement('i');
+  switch(weather){
+    case 'Clear':
+      icon.classList.add('fa-solid','fa-sun','big');
+      break;
+    case 'Clouds':
+      icon.classList.add('fa-solid','fa-cloud','big');
+      break;
+    case 'Thunderstorm':
+      icon.classList.add('fa-solid','fa-cloud-bolt','big');
+      break;
+    case 'Drizzle':
+      icon.classList.add('fa-solid','fa-cloud-sun-rain','big');
+      break;
+    case 'Rain':
+      icon.classList.add('fa-solid','fa-cloud-rain','big');
+      break;
+    case 'Snow':
+      icon.classList.add('fa-solid','fa-snowflake','big');
+      break;
+    case 'Tornado':
+      icon.classList.add('fa-solid','fa-tornado','big');
+      break;      
+    default:
+      icon.classList.add('fa-solid','fa-smog','big');
+      break;
   }
-  return relevantWeatherData;
+  return icon;
+}
+
+// the only free API call for forecast is 5 day, 3 hour periods
+async function get5DayWeather({latitude, longitude} = {}){
+  // TO-DO api call is invalid because it's not free, need to use the 5 day one
+  const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${APIKey}`, {mode: 'cors'});
+  const weatherData = await response.json();
+  const weatherDataArray = weatherData.list;
+  const relevantWeatherDataArray = [];
+
+  // clean up the weather data array to only get relevant values
+  weatherDataArray.forEach(rawDataObj => {
+    const day = getDayName(rawDataObj.dt_txt.substring(0,10), "en-US");
+    const maxTemperature = rawDataObj.main.temp_max;
+    const minTemperature = rawDataObj.main.temp_min;
+    // weather has potential values Thunderstorm, Drizzle, Rain, Snow, A lot of Different Atmosphere Ones, Clear, Clouds
+    const weather = rawDataObj.weather[0].main;
+    let insideArray = false;
+    
+    // mutate min, max temperature, weather if object is already in array
+    relevantWeatherDataArray.forEach(relevantObj => {
+      if(day === relevantObj.day){
+        relevantObj.maxTemperature = Math.max(relevantObj.maxTemperature, maxTemperature);  // eslint-disable-line no-param-reassign
+        relevantObj.minTemperature = Math.min(relevantObj.minTemperature, minTemperature);  // eslint-disable-line no-param-reassign
+        if((relevantObj.weather === 'Clear' || relevantObj.weather === 'Clouds') &&
+          (!(weather === 'Clear' || weather === 'Clouds'))){
+            relevantObj.weather = weather;  // eslint-disable-line no-param-reassign
+        }
+        insideArray = true;
+      }
+    })
+    
+    if(!insideArray){
+      relevantWeatherDataArray.push({day, maxTemperature, minTemperature, weather})
+    }
+  })
+
+  relevantWeatherDataArray.forEach(data => {
+    data.weatherIconDOM = getWeatherIconDOM(data.weather); // eslint-disable-line no-param-reassign
+  })
+
+  return relevantWeatherDataArray;
 }
 
 async function getWeatherData (locationObj){
@@ -68,9 +130,9 @@ async function getWeatherData (locationObj){
   return weather;
 }
  
-async function get7DayWeatherData (locationObj){
-  const weather = await get7DayWeather(await getCoords(locationObj));
+async function get5DayWeatherData (locationObj){
+  const weather = await get5DayWeather(await getCoords(locationObj));
   return weather;
 }
 
-export {getWeatherData, get7DayWeatherData};
+export {getWeatherData, get5DayWeatherData};
