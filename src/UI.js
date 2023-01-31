@@ -1,47 +1,12 @@
 
 
-import {getWeatherData, get7DayWeatherData} from './weatherAPICall';
+import {getWeatherData, get5DayWeatherData} from './weatherAPICall';
 import convertUnits from './unitConversion';
-
-// html helper functions
-function createContainer( {element, classes, identifier, childElements, customAttribute}){
-  const node = document.createElement(element);
-  if(classes){
-      classes.forEach(item => node.classList.add(item));
-  }
-  if(identifier){
-      node.setAttribute('id',identifier);
-  }
-  if(childElements){
-      childElements.forEach(item => node.appendChild(item))
-  }
-  if(customAttribute){
-      if(customAttribute.length > 1){
-          node.setAttribute(customAttribute[0], customAttribute[1]);
-      }
-  }
-
-  return node;
-}
-
-function createTag( {element, text, classes, identifier}){
-  const node = document.createElement(element);
-  if(classes){
-      classes.forEach(item => node.classList.add(item));
-  }
-  if(identifier){
-      node.setAttribute('id',identifier);
-  }
-  if(text){
-      node.innerText = text;
-  }
-  return node;
-}
-
+import FutureWeather from './nextWeekWeather'
 
 const UI = function createUI (){
-
-  const changeWeatherData = function changeCurrentWeatherDataToMatchDOM(currWeatherData){
+  // changes all weather data for today
+  const renderCurrentWeatherData = function changeCurrentWeatherDataToMatchDOM(currWeatherData){
     // gets all the elements that need to be changed
     const currentWeatherDOM = document.querySelector('[data-weather]');
     const currentLocationDOM = document.querySelector('[data-location]');
@@ -60,11 +25,23 @@ const UI = function createUI (){
     currentLowTemperature.innerText = `Low: ${convertUnits.kToF(currWeatherData.min_temperature)}°F`;
     currentHumidity.innerText = `Humidity: ${currWeatherData.humidity}%`;
     currentWind.innerText = `Wind: ${convertUnits.mToMi(currWeatherData.wind_speed)} mph`;
+  }
 
+  function remove5DayWeatherData (){
+    const allWeatherCardElems = [...document.querySelectorAll('.weather-card')];
+    allWeatherCardElems.forEach(elem => {
+      elem.remove();
+    })
+  }
 
-    console.log(currWeatherData);
-    // currentWeatherDOM.innerText = currWeatherData.description;
-
+  // changes all weather data for the next 5 days
+  const render5DayWeatherData = function change5DayWeatherDataToMatchDOM(weatherData){
+    remove5DayWeatherData();
+    const parentElement = document.getElementById('next-week-weather-container');
+    weatherData.forEach(day => {
+      const dayObject = new FutureWeather(day);
+      parentElement.appendChild(dayObject.getDOM());
+    })
   }
 
   function addLocationFormFunctionality() {
@@ -83,17 +60,19 @@ const UI = function createUI (){
           locationObj.country = property;
         }
       })
-      const currWeatherDataPromise = getWeatherData(locationObj);
+      const currWeatherData = getWeatherData(locationObj);
+      const next5DayWeather = get5DayWeatherData(locationObj);
       // change the promise to an object
-      currWeatherDataPromise.then((currWeatherData) => {
-        changeWeatherData(currWeatherData);
+      currWeatherData.then((value) => {
+        renderCurrentWeatherData(value);
       });
+      next5DayWeather.then((value) => {
+        render5DayWeatherData(value);
+      })
       // TO-DO empty form value if successful; otherwise write error
       event.preventDefault();
     })
   }
-
-
 
   function initialRender(){
     addLocationFormFunctionality();
@@ -104,7 +83,7 @@ const UI = function createUI (){
     );
     // change the promise to an object
     currWeatherDataPromise.then((currWeatherData) => {
-      changeWeatherData(currWeatherData);
+      renderCurrentWeatherData(currWeatherData);
     });
 
   }
