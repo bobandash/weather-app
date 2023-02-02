@@ -1,4 +1,4 @@
-//  api key for open weather api is 84648df1cd8895fa8526452f3725c93c
+import convertUnits from "./unitConversion";
 
 // should keep API Key in back-end once learn how to
 const APIKey = '84648df1cd8895fa8526452f3725c93c';
@@ -41,16 +41,13 @@ async function getWeather ({latitude, longitude} = {}){
     // timezone is in seconds var d = new Date((new Date().getTime())-25200*1000)
     // d.toISOString()
     time: weatherData.dt,
+    timezone: weatherData.timezone,
     description: weatherData.weather[0].description
   }
   return relevantWeatherData;
 }
 
-function getDayName(dateStr, locale)
-{
-    const date = new Date(dateStr);
-    return date.toLocaleDateString(locale, { weekday: 'long' });        
-}
+
 
 function getWeatherIconDOM(weather){
   const icon = document.createElement('i');
@@ -93,7 +90,7 @@ async function get5DayWeather({latitude, longitude} = {}){
 
   // clean up the weather data array to only get relevant values
   weatherDataArray.forEach(rawDataObj => {
-    const day = getDayName(rawDataObj.dt_txt.substring(0,10), "en-US");
+    const day = convertUnits.getDayName(rawDataObj.dt_txt.substring(0,10), "en-US");
     const maxTemperature = rawDataObj.main.temp_max;
     const minTemperature = rawDataObj.main.temp_min;
     // weather has potential values Thunderstorm, Drizzle, Rain, Snow, A lot of Different Atmosphere Ones, Clear, Clouds

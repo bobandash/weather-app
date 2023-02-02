@@ -19,7 +19,7 @@ const UI = function createUI (){
 
     currentWeatherDOM.innerText = currWeatherData.description;
     currentLocationDOM.innerText = currWeatherData.location;
-    currentTimeDOM.innerText = currWeatherData.time;
+    currentTimeDOM.innerText = convertUnits.unixToRegularTime(currWeatherData.time, currWeatherData.timezone);
     currentHumidity.innerText = `Humidity: ${currWeatherData.humidity}%`;
 
     if(isFahrenheit){
@@ -72,7 +72,7 @@ const UI = function createUI (){
       const next5DayWeather = get5DayWeatherData(locationObj);
       // change the promise to an object
       currWeatherData.then((value) => {
-        renderCurrentWeatherData(value);
+        renderCurrentWeatherData(value, true);
       });
       next5DayWeather.then((value) => {
         render5DayWeatherData(value);
@@ -82,7 +82,7 @@ const UI = function createUI (){
     })
   }
 
-  function addChangeMetricBtn(currWeatherData, next5DayWeatherData){
+/*   function addChangeMetricBtn(currWeatherData, next5DayWeatherData){
     const changeMetricBtn = document.getElementById('change-units-btn');
     changeMetricBtn.addEventListener('click', function(){
       next5DayWeatherData.forEach(data => data.toggleUnits())
@@ -90,11 +90,11 @@ const UI = function createUI (){
     const isFahrenheit = next5DayWeatherData.isFahreheit;
     renderCurrentWeatherData(currWeatherData, isFahrenheit);
     render5DayWeatherData(next5DayWeatherData);
-  }
+  } */
 
   function initialRender(locationObj){
     addLocationFormFunctionality();
-    
+
     const currWeatherDataPromise = getWeatherData(locationObj);
     const next5DayWeatherDataPromise = get5DayWeatherData(locationObj);
     // change the promise to an object
