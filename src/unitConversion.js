@@ -37,7 +37,15 @@ const convertUnits = (() => {
     const time = isoString.substring(11, 18);
     const hour = Number(time.substring(0, 2));
     const minutes = String(time.substring(3,5));
-    const timeFormat = hour > 12 ? `${hour % 12}:${minutes} PM` : `${hour}:${minutes} AM`;
+    let timeFormat;
+    if(hour === 0){
+      timeFormat = `12:${minutes} AM`;
+    }
+    else if(hour > 12){
+      timeFormat = `${hour % 12}:${minutes} PM`
+    } else {
+      timeFormat= `${hour}:${minutes} AM`;
+    }
 
     return `${timeFormat}, ${day}, ${dateFormat}`;
   }

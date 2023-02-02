@@ -36,18 +36,15 @@ function createTag( {element, text, classes, identifier}){
 }
 
 const FutureWeather = class {
-  constructor({day, maxTemperature, minTemperature, weather, weatherIconDOM}){
+  constructor({day, maxTemperature, minTemperature, weather, weatherIconDOM, isFahrenheit}){
     this.day = day;
     this.maxTemperature = maxTemperature;
     this.minTemperature = minTemperature;
     this.weather = weather;
     this.weatherIconDOM = weatherIconDOM;
-    this.isFahrenheit = true;
+    this.isFahrenheit = isFahrenheit;
   }
 
-  toggleUnits(){
-    this.isFahrenheit = !this.isFahrenheit;
-  }
 
   getDOM(){
     const dayText = createTag({
@@ -84,7 +81,21 @@ const FutureWeather = class {
 
     return container;
   }
-
 }
 
-export default FutureWeather;
+const currentUnits =  (() => {
+  let isFahrenheit = true;
+
+  function getIsFahrenheit(){
+    return isFahrenheit;
+  }
+
+  function toggleUnits(){
+    isFahrenheit = !isFahrenheit;
+  }
+
+  return {getIsFahrenheit, toggleUnits};
+})();
+
+
+export {FutureWeather, currentUnits};

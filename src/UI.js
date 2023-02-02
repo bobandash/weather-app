@@ -2,7 +2,7 @@
 
 import {getWeatherData, get5DayWeatherData} from './weatherAPICall';
 import convertUnits from './unitConversion';
-import FutureWeather from './nextWeekWeather'
+import {FutureWeather, currentUnits} from './weatherObjects'
 
 const UI = function createUI (){
   // changes all weather data for today
@@ -43,10 +43,11 @@ const UI = function createUI (){
   }
 
   // changes all weather data for the next 5 days
-  const render5DayWeatherData = function change5DayWeatherDataToMatchDOM(weatherData){
+  const render5DayWeatherData = function change5DayWeatherDataToMatchDOM(weatherData, isFahrenheit){
     remove5DayWeatherData();
     const parentElement = document.getElementById('next-week-weather-container');
     weatherData.forEach(day => {
+      day.isFahrenheit = isFahrenheit;  // eslint-disable-line no-param-reassign
       const dayObject = new FutureWeather(day);
       parentElement.appendChild(dayObject.getDOM());
     })
@@ -82,35 +83,35 @@ const UI = function createUI (){
     })
   }
 
-/*   function addChangeMetricBtn(currWeatherData, next5DayWeatherData){
+  function addChangeMetricBtn(currWeatherData, next5DayWeatherData){
     const changeMetricBtn = document.getElementById('change-units-btn');
-    changeMetricBtn.addEventListener('click', function(){
-      next5DayWeatherData.forEach(data => data.toggleUnits())
-    })
-    const isFahrenheit = next5DayWeatherData.isFahreheit;
-    renderCurrentWeatherData(currWeatherData, isFahrenheit);
-    render5DayWeatherData(next5DayWeatherData);
-  } */
+    changeMetricBtn.addEventListener('click', () => {
+      currentUnits.toggleUnits();
+      const isFahrenheit = currentUnits.getIsFahrenheit();
+      renderCurrentWeatherData(currWeatherData, isFahrenheit);
+      render5DayWeatherData(next5DayWeatherData, isFahrenheit);      
+  })}
+
+
+  function renderBackground(){
+
+  }
 
   function initialRender(locationObj){
     addLocationFormFunctionality();
-
     const currWeatherDataPromise = getWeatherData(locationObj);
     const next5DayWeatherDataPromise = get5DayWeatherData(locationObj);
-    // change the promise to an object
-    currWeatherDataPromise.then((currWeatherData) => {
-      renderCurrentWeatherData(currWeatherData, true);
+    const isFahrenheit = currentUnits.getIsFahrenheit();
+    Promise.all([currWeatherDataPromise, next5DayWeatherDataPromise]).then((values) => {
+      renderCurrentWeatherData(values[0], isFahrenheit);
+      render5DayWeatherData(values[1], isFahrenheit);
+      addChangeMetricBtn(values[0], values[1]);
     });
-    next5DayWeatherDataPromise.then((fiveDayWeatherData) => {
-      render5DayWeatherData(fiveDayWeatherData);
-    });
+    renderBackground();
   }
 
-  function renderNewLocation(weatherData){
 
-  }
-
-  return {initialRender, renderNewLocation};
+  return {initialRender};
 
 }();
 
