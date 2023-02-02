@@ -88,6 +88,7 @@ const UI = function createUI (){
     changeMetricBtn.addEventListener('click', () => {
       currentUnits.toggleUnits();
       const isFahrenheit = currentUnits.getIsFahrenheit();
+      changeMetricBtn.innerText = isFahrenheit ? 'Change to °C' : 'Change to °F';
       renderCurrentWeatherData(currWeatherData, isFahrenheit);
       render5DayWeatherData(next5DayWeatherData, isFahrenheit);      
   })}
