@@ -15,9 +15,10 @@ const convertUnits = (() => {
     return mi;
   }
 
-  function getDayName(dateStr, locale){
-      const date = new Date(dateStr);
-      return date.toLocaleDateString(locale, { weekday: 'long' });        
+  function getDayName(dateStr){
+      const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      const dayIndex = new Date(dateStr).getDay();
+      return days[dayIndex];    
   }
 
   // TO-DO - UNIX TIME TO LOCAL TIME IN THAT TIME ZONE
@@ -37,7 +38,7 @@ const convertUnits = (() => {
     const hour = Number(time.substring(0, 2));
     const minutes = String(time.substring(3,5));
     const timeFormat = hour > 12 ? `${hour % 12}:${minutes} PM` : `${hour}:${minutes} AM`;
-    
+
     return `${timeFormat}, ${day}, ${dateFormat}`;
   }
   return {kToC, kToF, mToMi, getDayName, unixToRegularTime};

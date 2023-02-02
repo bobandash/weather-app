@@ -87,10 +87,9 @@ async function get5DayWeather({latitude, longitude} = {}){
   const weatherData = await response.json();
   const weatherDataArray = weatherData.list;
   const relevantWeatherDataArray = [];
-
   // clean up the weather data array to only get relevant values
   weatherDataArray.forEach(rawDataObj => {
-    const day = convertUnits.getDayName(rawDataObj.dt_txt.substring(0,10), "en-US");
+    const day = convertUnits.getDayName(rawDataObj.dt_txt.substring(0,10))
     const maxTemperature = rawDataObj.main.temp_max;
     const minTemperature = rawDataObj.main.temp_min;
     // weather has potential values Thunderstorm, Drizzle, Rain, Snow, A lot of Different Atmosphere Ones, Clear, Clouds
