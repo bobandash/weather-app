@@ -5,6 +5,17 @@ import convertUnits from './unitConversion';
 import {FutureWeather, currentUnits} from './weatherObjects'
 
 const UI = function createUI (){
+  function renderBackground(currWeatherData){
+    const isDay = convertUnits.isDay(currWeatherData.time, currWeatherData.timezone);
+    const htmlDOM = document.querySelector('html');
+    if(isDay){
+      htmlDOM.classList.add('sky-bg');
+      htmlDOM.classList.remove('dark-sky-bg');
+    } else {
+      htmlDOM.classList.add('dark-sky-bg');
+      htmlDOM.classList.remove('sky-bg');
+    }
+  }
   // changes all weather data for today
   const renderCurrentWeatherData = function changeCurrentWeatherDataToMatchDOM(currWeatherData, isFahrenheit){
     // gets all the elements that need to be changed
@@ -33,6 +44,7 @@ const UI = function createUI (){
       currentLowTemperature.innerText = `Low: ${convertUnits.kToC(currWeatherData.min_temperature)}°C`;
       currentWind.innerText = `Wind: ${currWeatherData.wind_speed} m/s`;      
     }
+    renderBackground(currWeatherData);
   }
 
   function remove5DayWeatherData (){
@@ -94,10 +106,6 @@ const UI = function createUI (){
   })}
 
 
-  function renderBackground(){
-
-  }
-
   function initialRender(locationObj){
     addLocationFormFunctionality();
     const currWeatherDataPromise = getWeatherData(locationObj);
@@ -108,7 +116,6 @@ const UI = function createUI (){
       render5DayWeatherData(values[1], isFahrenheit);
       addChangeMetricBtn(values[0], values[1]);
     });
-    renderBackground();
   }
 
 

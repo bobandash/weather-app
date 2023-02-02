@@ -21,6 +21,17 @@ const convertUnits = (() => {
       return days[dayIndex];    
   }
 
+  const isDay = function convertUnixToTimeofDay(unixTime, timezone){
+    const unixActualTime = unixTime + timezone;
+    const isoString = new Date(unixActualTime * 1000).toISOString();
+    const time = isoString.substring(11, 18);
+    const hour = Number(time.substring(0, 2));
+    if(hour >= 6 && hour < 18){
+      return true;
+    }
+    return false;
+  }
+
   // TO-DO - UNIX TIME TO LOCAL TIME IN THAT TIME ZONE
   // format like 4:13PM, Monday, January 28, 2023
   const unixToRegularTime = function convertUnitTimeStampToRegularTime(unixTime, timezone){
@@ -49,7 +60,7 @@ const convertUnits = (() => {
 
     return `${timeFormat}, ${day}, ${dateFormat}`;
   }
-  return {kToC, kToF, mToMi, getDayName, unixToRegularTime};
+  return {kToC, kToF, mToMi, getDayName, unixToRegularTime, isDay};
 })();
 
 export default convertUnits;
