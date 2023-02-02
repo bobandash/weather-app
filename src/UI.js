@@ -83,12 +83,13 @@ const UI = function createUI (){
       })
       const currWeatherData = getWeatherData(locationObj);
       const next5DayWeather = get5DayWeatherData(locationObj);
+      const isFahrenheit = currentUnits.getIsFahrenheit();
       // change the promise to an object
       currWeatherData.then((value) => {
-        renderCurrentWeatherData(value, true);
+        renderCurrentWeatherData(value, isFahrenheit);
       });
       next5DayWeather.then((value) => {
-        render5DayWeatherData(value);
+        render5DayWeatherData(value, isFahrenheit);
       })
       // TO-DO empty form value if successful; otherwise write error
       event.preventDefault();
