@@ -85,11 +85,14 @@ const UI = function createUI (){
       const next5DayWeather = get5DayWeatherData(locationObj);
       const isFahrenheit = currentUnits.getIsFahrenheit();
       // change the promise to an object
-      currWeatherData.then((value) => {
-        renderCurrentWeatherData(value, isFahrenheit);
-      });
-      next5DayWeather.then((value) => {
-        render5DayWeatherData(value, isFahrenheit);
+      Promise.all([currWeatherData, next5DayWeather])
+      .then((values) => {
+        renderCurrentWeatherData(values[0], isFahrenheit);
+        render5DayWeatherData(values[1], isFahrenheit);
+      })
+      .catch(() => {
+        locationForm.classList.remove('no-error');
+        locationForm.classList.add('error');
       })
       // TO-DO empty form value if successful; otherwise write error
       event.preventDefault();
@@ -106,9 +109,18 @@ const UI = function createUI (){
       render5DayWeatherData(next5DayWeatherData, isFahrenheit);      
   })}
 
+  function addFocusSearchbar(){
+    const locationInput = document.getElementById('location');
+    const locationForm = document.getElementById('location-form');
+    locationInput.addEventListener('focus', () => {
+      locationForm.classList.remove('error');
+      locationForm.classList.add('no-error');
+    })
+  }
 
   function initialRender(locationObj){
     addLocationFormFunctionality();
+    addFocusSearchbar();
     const currWeatherDataPromise = getWeatherData(locationObj);
     const next5DayWeatherDataPromise = get5DayWeatherData(locationObj);
     const isFahrenheit = currentUnits.getIsFahrenheit();

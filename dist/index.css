@@ -35,11 +35,18 @@ body * {
   margin-right: 3rem;
 }
 
+#location-form.error {
+  border: 2px solid red;
+}
+
+#location-form.no-error {
+  border: 2px solid white;
+}
+
 /* with the location form */
 
 #location-form {
   margin: 3rem auto 0 auto;
-  border: 2px solid white;
   border-radius: 20px;
   display: flex;
 }
