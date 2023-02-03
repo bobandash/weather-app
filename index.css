@@ -126,6 +126,11 @@ body * {
   font-size: 1.5rem;
 }
 
+#change-units-btn:hover {
+  cursor: pointer;
+  font-weight: 700;
+}
+
 #current-temperature-values-container {
   padding-left: 1rem;
   padding-top: 1.5rem;
@@ -267,8 +272,12 @@ i.big {
     flex-direction: column;
     justify-content: center;
     margin-left: 1rem;
-    width: 175px;
-    height: 175px;
+    width: 190px;
+    height: 190px;
+  }
+
+  .weather-card .normal-header {
+    font-size: 2.75rem;
   }
   
   #future-weather-header {
