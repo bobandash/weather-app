@@ -17,12 +17,12 @@ html {
 
 
 html.dark-sky-bg {
-  background: url(../src/assets/dark-sky.jpg) no-repeat;
+  background: url(/src/assets/dark-sky.jpg) no-repeat;
   background-size: cover;
 }
 
 html.sky-bg {
-  background: url(../src/assets/sky.jpg) no-repeat;
+  background: url(/src/assets/sky.jpg) no-repeat;
   background-size: cover;
 }
 
